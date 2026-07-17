@@ -1,0 +1,13 @@
+{
+  "name": "medical-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GIS Medical Dashboard MVP — React + Express + PostgreSQL + Socket.io",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "db:init": "npm run db:init --prefix backend",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend"
+  }
+}
