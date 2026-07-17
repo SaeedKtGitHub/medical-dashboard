@@ -262,7 +262,7 @@ p {
 
 .filter-field input:focus,
 .filter-field select:focus {
-  outline: 2px solid rgba(11, 110, 153, 0.45);
+  outline: 2px solid rgba(0, 122, 61, 0.45);
   outline-offset: 1px;
   border-color: var(--primary);
 }
@@ -634,7 +634,7 @@ p {
 .nearest-hospitals {
   margin-top: 10px;
   padding-top: 8px;
-  border-top: 1px solid #d5e4ee;
+  border-top: 1px solid var(--border);
 }
 
 .nearest-hospitals h4 {
