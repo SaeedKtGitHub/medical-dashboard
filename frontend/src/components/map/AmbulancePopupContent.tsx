@@ -6,6 +6,7 @@ import {
   formatOccupancy,
   formatStatusLabel,
 } from '../../services/formatters';
+import { labels } from '../../i18n/ar';
 
 interface AmbulancePopupContentProps {
   ambulance: Ambulance;
@@ -39,9 +40,7 @@ export function AmbulancePopupContent({
       } catch (loadError) {
         if (!cancelled) {
           setError(
-            loadError instanceof Error
-              ? loadError.message
-              : 'Failed to load nearest hospitals'
+            loadError instanceof Error ? loadError.message : labels.failedNearest
           );
         }
       } finally {
@@ -61,16 +60,22 @@ export function AmbulancePopupContent({
   return (
     <div className="map-popup map-popup--ambulance">
       <strong>{ambulance.code}</strong>
-      <p>Status: {formatStatusLabel(ambulance.status)}</p>
-      <p>Latitude: {formatCoordinate(ambulance.latitude)}</p>
-      <p>Longitude: {formatCoordinate(ambulance.longitude)}</p>
+      <p>
+        {labels.statusLabel}: {formatStatusLabel(ambulance.status)}
+      </p>
+      <p>
+        {labels.latitude}: {formatCoordinate(ambulance.latitude)}
+      </p>
+      <p>
+        {labels.longitude}: {formatCoordinate(ambulance.longitude)}
+      </p>
 
       <div className="nearest-hospitals">
-        <h4>Nearest hospitals</h4>
-        {loading ? <p className="muted">Calculating distances...</p> : null}
+        <h4>{labels.nearestHospitals}</h4>
+        {loading ? <p className="muted">{labels.calculatingDistances}</p> : null}
         {error ? <p className="inline-error">{error}</p> : null}
         {!loading && !error && nearest.length === 0 ? (
-          <p className="muted">No hospitals found</p>
+          <p className="muted">{labels.noHospitalsFound}</p>
         ) : null}
         {!loading && nearest.length > 0 ? (
           <ul>
@@ -78,7 +83,7 @@ export function AmbulancePopupContent({
               <li key={`${hospital.name}-${hospital.distance}`}>
                 <strong>{hospital.name}</strong>
                 <span>
-                  {hospital.distance.toFixed(1)} km ·{' '}
+                  {hospital.distance.toFixed(1)} {labels.km} ·{' '}
                   {formatOccupancy(hospital.occupancy)}
                 </span>
               </li>

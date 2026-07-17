@@ -21,10 +21,11 @@
   --shadow: 0 10px 30px rgba(13, 31, 22, 0.1);
   --radius: 14px;
   --sidebar-width: 420px;
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif;
   color: var(--text);
   background: var(--bg);
-  line-height: 1.45;
+  line-height: 1.6;
+  direction: rtl;
 }
 
 * {
@@ -63,6 +64,19 @@ p {
   grid-template-columns: var(--sidebar-width) 1fr;
   min-height: 100vh;
   height: 100vh;
+}
+
+/* Keep map LTR so Leaflet controls and tiles behave correctly */
+.dashboard-map,
+.map-shell,
+.leaflet-container {
+  direction: ltr;
+}
+
+.map-legend,
+.map-popup {
+  direction: rtl;
+  text-align: right;
 }
 
 .app-shell--centered {
@@ -413,7 +427,8 @@ p {
 
 .toast {
   position: fixed;
-  right: 20px;
+  left: 20px;
+  right: auto;
   bottom: 20px;
   z-index: 2000;
   display: flex;

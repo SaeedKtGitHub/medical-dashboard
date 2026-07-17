@@ -12,6 +12,9 @@ async function initDatabase(): Promise<void> {
   const client = await pool.connect();
 
   try {
+    // Ensure Arabic (and other Unicode) seed data works on Windows clients (WIN1252).
+    await client.query("SET client_encoding TO 'UTF8'");
+
     console.log('Applying schema...');
     await client.query(schemaSql);
     console.log('Schema applied.');

@@ -7,6 +7,11 @@ import {
   formatStatusLabel,
   getHospitalMarkerColor,
 } from '../../services/formatters';
+import {
+  labels,
+  translateFacilityType,
+  translateGovernorate,
+} from '../../i18n/ar';
 import { AmbulancePopupContent } from './AmbulancePopupContent';
 
 const SYRIA_CENTER: [number, number] = [34.8, 38.5];
@@ -26,7 +31,7 @@ function createHospitalIcon(occupancy: number): L.DivIcon {
 
 const ambulanceIcon = L.divIcon({
   className: 'custom-marker',
-  html: `<span class="marker-ambulance" title="Ambulance">
+  html: `<span class="marker-ambulance" title="${labels.ambulances}">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <rect x="2" y="8" width="16" height="9" rx="2" fill="#007A3D"/>
       <path d="M18 11h3l1 3v3h-4v-6z" fill="#007A3D"/>
@@ -57,10 +62,19 @@ function HospitalMarkers({ hospitals }: HospitalMarkersProps) {
           <Popup>
             <div className="map-popup">
               <strong>{hospital.name}</strong>
-              <p>Occupancy: {formatOccupancy(hospital.occupancy)}</p>
-              <p>Type: {hospital.type}</p>
-              <p>Status: {formatStatusLabel(hospital.status)}</p>
-              <p>Governorate: {hospital.governorate}</p>
+              <p>
+                {labels.occupancyLabel}: {formatOccupancy(hospital.occupancy)}
+              </p>
+              <p>
+                {labels.typeLabel}: {translateFacilityType(hospital.type)}
+              </p>
+              <p>
+                {labels.statusLabel}: {formatStatusLabel(hospital.status)}
+              </p>
+              <p>
+                {labels.governorateLabel}:{' '}
+                {translateGovernorate(hospital.governorate)}
+              </p>
             </div>
           </Popup>
         </Marker>
@@ -127,7 +141,9 @@ export function DashboardMap({
   const isEmpty = hospitals.length === 0 && ambulances.length === 0;
 
   return (
-    <div className={`map-shell ${mode === 'historical' ? 'map-shell--historical' : ''}`}>
+    <div
+      className={`map-shell ${mode === 'historical' ? 'map-shell--historical' : ''}`}
+    >
       <MapContainer
         center={SYRIA_CENTER}
         zoom={DEFAULT_ZOOM}
@@ -142,33 +158,35 @@ export function DashboardMap({
         <AmbulanceMarkers ambulances={ambulances} />
       </MapContainer>
 
-      <div className="map-legend" aria-label="Map legend">
-        <strong className="map-legend__title">Map Legend</strong>
+      <div className="map-legend" aria-label={labels.mapLegend}>
+        <strong className="map-legend__title">{labels.mapLegend}</strong>
         <span>
-          <i className="legend-swatch legend-swatch--green" /> Green: Low occupancy
+          <i className="legend-swatch legend-swatch--green" /> {labels.legendLow}
         </span>
         <span>
-          <i className="legend-swatch legend-swatch--yellow" /> Yellow: Medium occupancy
+          <i className="legend-swatch legend-swatch--yellow" />{' '}
+          {labels.legendMedium}
         </span>
         <span>
-          <i className="legend-swatch legend-swatch--red" /> Red: High occupancy
+          <i className="legend-swatch legend-swatch--red" /> {labels.legendHigh}
         </span>
         <span>
-          <i className="legend-swatch legend-swatch--ambulance" /> Ambulance unit
+          <i className="legend-swatch legend-swatch--ambulance" />{' '}
+          {labels.legendAmbulance}
         </span>
       </div>
 
       {loading ? (
         <div className="map-overlay" role="status">
           <div className="spinner" aria-hidden="true" />
-          <p>Loading map data...</p>
+          <p>{labels.loadingMap}</p>
         </div>
       ) : null}
 
       {!loading && isEmpty ? (
         <div className="map-overlay map-overlay--empty" role="status">
-          <p>No hospitals found</p>
-          <span>Try adjusting your filters or return to live mode.</span>
+          <p>{labels.noHospitalsFound}</p>
+          <span>{labels.emptyMapHint}</span>
         </div>
       ) : null}
     </div>

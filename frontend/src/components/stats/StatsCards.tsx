@@ -1,5 +1,6 @@
 import type { DashboardStats } from '../../types';
 import { formatOccupancy } from '../../services/formatters';
+import { labels } from '../../i18n/ar';
 import { StatCard } from '../common/ui';
 
 interface StatsCardsProps {
@@ -9,16 +10,16 @@ interface StatsCardsProps {
 export function StatsCards({ stats }: StatsCardsProps) {
   return (
     <div className="stats-grid">
-      <StatCard label="Hospitals" value={stats.totalHospitals} />
-      <StatCard label="Ambulances" value={stats.totalAmbulances} />
+      <StatCard label={labels.hospitals} value={stats.totalHospitals} />
+      <StatCard label={labels.ambulances} value={stats.totalAmbulances} />
       <StatCard
-        label="Average Occupancy"
+        label={labels.averageOccupancy}
         value={formatOccupancy(stats.averageOccupancy)}
       />
       <StatCard
-        label="Active Alerts"
+        label={labels.activeAlerts}
         value={stats.activeAlerts}
-        hint="Last 24 hours"
+        hint={labels.last24Hours}
       />
     </div>
   );

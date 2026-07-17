@@ -4,6 +4,12 @@ import {
   HOSPITAL_STATUSES,
   OCCUPANCY_OPTIONS,
 } from '../../types';
+import {
+  labels,
+  translateFacilityType,
+  translateGovernorate,
+  translateStatus,
+} from '../../i18n/ar';
 import { Panel } from '../common/ui';
 
 interface FiltersPanelProps {
@@ -24,78 +30,78 @@ export function FiltersPanel({
 }: FiltersPanelProps) {
   return (
     <Panel
-      title="Filters"
+      title={labels.filters}
       action={
         <button type="button" className="btn-link" onClick={onReset}>
-          Reset
+          {labels.reset}
         </button>
       }
     >
       <div className="filters-panel">
         <label className="filter-field">
-          <span>Search hospital</span>
+          <span>{labels.searchHospital}</span>
           <input
             type="search"
-            placeholder="Search by name..."
+            placeholder={labels.searchPlaceholder}
             value={filters.search}
             onChange={(event) => onChange('search', event.target.value)}
           />
         </label>
 
         <label className="filter-field">
-          <span>Governorate</span>
+          <span>{labels.governorate}</span>
           <select
             value={filters.governorate}
             onChange={(event) => onChange('governorate', event.target.value)}
           >
-            <option value="">All governorates</option>
+            <option value="">{labels.allGovernorates}</option>
             {governorates.map((governorate) => (
               <option key={governorate} value={governorate}>
-                {governorate}
+                {translateGovernorate(governorate)}
               </option>
             ))}
           </select>
         </label>
 
         <label className="filter-field">
-          <span>Facility type</span>
+          <span>{labels.facilityType}</span>
           <select
             value={filters.type}
             onChange={(event) => onChange('type', event.target.value)}
           >
-            <option value="">All types</option>
+            <option value="">{labels.allTypes}</option>
             {FACILITY_TYPES.map((type) => (
               <option key={type} value={type}>
-                {type}
+                {translateFacilityType(type)}
               </option>
             ))}
           </select>
         </label>
 
         <label className="filter-field">
-          <span>Status</span>
+          <span>{labels.status}</span>
           <select
             value={filters.status}
             onChange={(event) => onChange('status', event.target.value)}
           >
-            <option value="">All statuses</option>
+            <option value="">{labels.allStatuses}</option>
             {HOSPITAL_STATUSES.map((status) => (
               <option key={status} value={status}>
-                {status}
+                {translateStatus(status)}
               </option>
             ))}
           </select>
         </label>
 
         <label className="filter-field">
-          <span>Occupancy</span>
+          <span>{labels.occupancy}</span>
           <select
             value={filters.occupancy}
             onChange={(event) =>
               onChange('occupancy', event.target.value as OccupancyBand | '')
             }
           >
-            <option value="">All occupancy levels</option>
+            <option value="">{labels.allOccupancy}</option>
             {OCCUPANCY_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -111,7 +117,7 @@ export function FiltersPanel({
               checked={filters.showHospitals}
               onChange={(event) => onChange('showHospitals', event.target.checked)}
             />
-            <span>Show Hospitals</span>
+            <span>{labels.showHospitals}</span>
           </label>
           <label className="filter-toggle">
             <input
@@ -121,7 +127,7 @@ export function FiltersPanel({
                 onChange('showAmbulances', event.target.checked)
               }
             />
-            <span>Show Ambulances</span>
+            <span>{labels.showAmbulances}</span>
           </label>
         </div>
       </div>

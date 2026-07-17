@@ -1,5 +1,10 @@
 import type { Alert } from '../../types';
 import { formatAlertTime } from '../../services/formatters';
+import {
+  labels,
+  translateCategory,
+  translateSeverity,
+} from '../../i18n/ar';
 import { Panel } from '../common/ui';
 
 interface AlertCenterProps {
@@ -19,9 +24,9 @@ function severityIcon(severity: Alert['severity']): string {
 
 export function AlertCenter({ alerts }: AlertCenterProps) {
   return (
-    <Panel title="Alert Center">
+    <Panel title={labels.alertCenter}>
       {alerts.length === 0 ? (
-        <p className="empty-state">No active alerts</p>
+        <p className="empty-state">{labels.noActiveAlerts}</p>
       ) : (
         <ul className="alert-center">
           {alerts.map((alert) => (
@@ -42,9 +47,11 @@ export function AlertCenter({ alerts }: AlertCenterProps) {
                   <span
                     className={`severity-badge severity-badge--${alert.severity.toLowerCase()}`}
                   >
-                    {alert.severity}
+                    {translateSeverity(alert.severity)}
                   </span>
-                  <span className="category-chip">{alert.category}</span>
+                  <span className="category-chip">
+                    {translateCategory(alert.category)}
+                  </span>
                   <time dateTime={alert.createdAt}>
                     {formatAlertTime(alert.createdAt)}
                   </time>

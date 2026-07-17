@@ -8,6 +8,7 @@ import { DashboardMap } from '../map/DashboardMap';
 import { StatsCards } from '../stats/StatsCards';
 import { useDashboardData } from '../../hooks/useDashboardData';
 import { useDashboardFilters } from '../../hooks/useDashboardFilters';
+import { labels } from '../../i18n/ar';
 
 export function DashboardLayout() {
   const {
@@ -45,7 +46,7 @@ export function DashboardLayout() {
   if (loading) {
     return (
       <div className="app-shell app-shell--centered">
-        <LoadingState message="Loading medical dashboard..." />
+        <LoadingState message={labels.loadingDashboard} />
       </div>
     );
   }
@@ -55,9 +56,10 @@ export function DashboardLayout() {
       <div className="app-shell app-shell--centered">
         <ErrorState
           message={
-            error.includes('Backend unavailable')
-              ? error
-              : `API request failed. ${error}`
+            error.includes(labels.backendUnavailable) ||
+            error.toLowerCase().includes('backend unavailable')
+              ? labels.backendUnavailable
+              : `${labels.apiFailedPrefix}${error}`
           }
           onRetry={reload}
         />
@@ -97,16 +99,16 @@ export function DashboardLayout() {
       <main className="main-area">
         <header className="main-area__header">
           <div>
-            <h2>Syria Medical Network</h2>
+            <h2>{labels.networkTitle}</h2>
             <p>
               {mode === 'historical'
-                ? 'Historical system state (live updates paused)'
-                : 'Real-time hospital occupancy and ambulance positions'}
+                ? labels.historicalSubtitle
+                : labels.liveSubtitle}
             </p>
           </div>
           {mode === 'historical' ? (
             <div className="mode-banner mode-banner--historical">
-              Historical Mode
+              {labels.historicalMode}
             </div>
           ) : null}
         </header>

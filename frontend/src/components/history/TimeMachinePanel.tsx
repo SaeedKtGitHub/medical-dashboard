@@ -1,4 +1,5 @@
 import { Panel } from '../common/ui';
+import { labels } from '../../i18n/ar';
 
 interface TimeMachinePanelProps {
   date: string;
@@ -26,26 +27,24 @@ export function TimeMachinePanel({
   onReturnLive,
 }: TimeMachinePanelProps) {
   return (
-    <Panel title="Time Machine">
+    <Panel title={labels.timeMachine}>
       <div className="time-machine">
         {mode === 'historical' ? (
           <div className="mode-banner mode-banner--historical" role="status">
-            Historical Mode
+            {labels.historicalMode}
             {historicalAt ? (
               <span>
                 {' '}
-                · {new Date(historicalAt).toLocaleString()}
+                · {new Date(historicalAt).toLocaleString('ar-SY')}
               </span>
             ) : null}
           </div>
         ) : (
-          <p className="muted">
-            Select a date and time to inspect a saved system snapshot.
-          </p>
+          <p className="muted">{labels.timeMachineHint}</p>
         )}
 
         <label className="filter-field">
-          <span>Date</span>
+          <span>{labels.date}</span>
           <input
             type="date"
             value={date}
@@ -54,7 +53,7 @@ export function TimeMachinePanel({
         </label>
 
         <label className="filter-field">
-          <span>Time</span>
+          <span>{labels.time}</span>
           <input
             type="time"
             value={time}
@@ -71,7 +70,7 @@ export function TimeMachinePanel({
             onClick={onLoadHistorical}
             disabled={loading}
           >
-            {loading ? 'Loading...' : 'Load historical view'}
+            {loading ? labels.loadingGeneric : labels.loadHistorical}
           </button>
           <button
             type="button"
@@ -79,7 +78,7 @@ export function TimeMachinePanel({
             onClick={onReturnLive}
             disabled={loading || mode === 'live'}
           >
-            Return to Live Mode
+            {labels.returnLive}
           </button>
         </div>
       </div>

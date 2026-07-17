@@ -1,3 +1,7 @@
+import {
+  translateStatus,
+} from '../i18n/ar';
+
 export function getHospitalMarkerColor(occupancy: number): string {
   if (occupancy < 40) {
     return '#22c55e';
@@ -9,7 +13,7 @@ export function getHospitalMarkerColor(occupancy: number): string {
 }
 
 export function formatOccupancy(occupancy: number): string {
-  return `${Math.round(occupancy)}%`;
+  return `${Math.round(occupancy)}٪`;
 }
 
 export function formatCoordinate(value: number): string {
@@ -18,7 +22,7 @@ export function formatCoordinate(value: number): string {
 
 export function formatAlertTime(isoDate: string): string {
   const date = new Date(isoDate);
-  return date.toLocaleString(undefined, {
+  return date.toLocaleString('ar-SY', {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
@@ -27,8 +31,5 @@ export function formatAlertTime(isoDate: string): string {
 }
 
 export function formatStatusLabel(status: string): string {
-  return status
-    .split('_')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
+  return translateStatus(status);
 }

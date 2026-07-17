@@ -1,10 +1,13 @@
+import { labels } from '../../i18n/ar';
 import type { ReactNode } from 'react';
 
 interface LoadingStateProps {
   message?: string;
 }
 
-export function LoadingState({ message = 'Loading dashboard...' }: LoadingStateProps) {
+export function LoadingState({
+  message = labels.loadingGeneric,
+}: LoadingStateProps) {
   return (
     <div className="state-panel state-panel--loading" role="status">
       <div className="state-panel__brand" aria-hidden="true">
@@ -24,11 +27,11 @@ interface ErrorStateProps {
 export function ErrorState({ message, onRetry }: ErrorStateProps) {
   return (
     <div className="state-panel state-panel--error" role="alert">
-      <h2>Unable to load dashboard</h2>
+      <h2>{labels.unableToLoad}</h2>
       <p>{message}</p>
       {onRetry ? (
         <button type="button" className="btn-primary" onClick={onRetry}>
-          Try again
+          {labels.tryAgain}
         </button>
       ) : null}
     </div>

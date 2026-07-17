@@ -9,6 +9,7 @@ import type {
   NearestHospital,
 } from '../types';
 import { buildHospitalQuery } from './filterService';
+import { labels } from '../i18n/ar';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -18,13 +19,13 @@ async function request<T>(path: string): Promise<T> {
   try {
     response = await fetch(`${API_URL}${path}`);
   } catch {
-    throw new Error(
-      'Backend unavailable. Please check that the API server is running.'
-    );
+    throw new Error(labels.backendUnavailable);
   }
 
   if (!response.ok) {
-    throw new Error(`Request failed: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `${labels.requestFailed}: ${response.status} ${response.statusText}`
+    );
   }
 
   const payload = (await response.json()) as {
@@ -34,7 +35,7 @@ async function request<T>(path: string): Promise<T> {
   };
 
   if (!payload.success) {
-    throw new Error(payload.error || 'Unknown API error');
+    throw new Error(payload.error || labels.unknownApiError);
   }
 
   return payload.data;

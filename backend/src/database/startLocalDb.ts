@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { Client } from 'pg';
 import EmbeddedPostgres from 'embedded-postgres';
 
 const databaseDir = path.resolve(__dirname, '../../.pgsql-data');
@@ -7,6 +8,48 @@ const port = 5432;
 const user = 'postgres';
 const password = 'postgres';
 const databaseName = 'medical_dashboard';
+
+/** Windows initdb often uses WIN1252; recreate as UTF8 so Arabic seed data works. */
+async function ensureUtf8Database(): Promise<void> {
+  const admin = new Client({
+    host: 'localhost',
+    port,
+    user,
+    password,
+    database: 'postgres',
+  });
+  await admin.connect();
+  try {
+    const existing = await admin.query(
+      'SELECT pg_encoding_to_char(encoding) AS encoding FROM pg_database WHERE datname = $1',
+      [databaseName]
+    );
+
+    const encoding = existing.rows[0]?.encoding as string | undefined;
+    if (encoding === 'UTF8') {
+      console.log(`Database "${databaseName}" is UTF8.`);
+      return;
+    }
+
+    if (encoding) {
+      console.log(
+        `Database "${databaseName}" is ${encoding}; recreating as UTF8 for Arabic names...`
+      );
+      await admin.query(
+        `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1 AND pid <> pg_backend_pid()`,
+        [databaseName]
+      );
+      await admin.query(`DROP DATABASE IF EXISTS ${databaseName}`);
+    }
+
+    await admin.query(
+      `CREATE DATABASE ${databaseName} WITH ENCODING 'UTF8' LC_COLLATE 'C' LC_CTYPE 'C' TEMPLATE template0`
+    );
+    console.log(`Database "${databaseName}" created with UTF8 encoding.`);
+  } finally {
+    await admin.end();
+  }
+}
 
 async function startLocalDatabase(): Promise<void> {
   fs.mkdirSync(databaseDir, { recursive: true });
@@ -29,18 +72,7 @@ async function startLocalDatabase(): Promise<void> {
   console.log(`Starting local PostgreSQL on port ${port}...`);
   await pg.start();
 
-  try {
-    await pg.createDatabase(databaseName);
-    console.log(`Database "${databaseName}" created.`);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (message.toLowerCase().includes('already exists')) {
-      console.log(`Database "${databaseName}" already exists.`);
-    } else {
-      // createDatabase may throw differently across versions; continue if DB is usable
-      console.warn('createDatabase note:', message);
-    }
-  }
+  await ensureUtf8Database();
 
   console.log('Local PostgreSQL is ready.');
   console.log(`DATABASE_URL=postgresql://${user}:${password}@localhost:${port}/${databaseName}`);

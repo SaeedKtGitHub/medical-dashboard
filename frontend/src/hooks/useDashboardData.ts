@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from '../services/api';
 import { createDashboardSocket } from '../services/socket';
+import { labels } from '../i18n/ar';
 import type { Alert, Ambulance, Hospital } from '../types';
 
 export type DashboardMode = 'live' | 'historical';
@@ -72,7 +73,7 @@ export function useDashboardData() {
       modeRef.current = 'live';
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : 'Failed to load dashboard data';
+        error instanceof Error ? error.message : labels.failedLoadData;
       setState((prev) => ({
         ...prev,
         loading: false,
@@ -161,9 +162,7 @@ export function useDashboardData() {
       }));
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : 'Failed to load historical view';
+        error instanceof Error ? error.message : labels.failedHistorical;
       setState((prev) => ({
         ...prev,
         historyLoading: false,
@@ -199,9 +198,7 @@ export function useDashboardData() {
       }));
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : 'Failed to return to live mode';
+        error instanceof Error ? error.message : labels.failedReturnLive;
       setState((prev) => ({
         ...prev,
         historyLoading: false,

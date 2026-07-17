@@ -32,52 +32,52 @@ const ALERT_TEMPLATES: AlertTemplate[] = [
     severity: 'INFO',
     category: 'System',
     templates: [
-      'Routine status check completed across monitored facilities.',
-      '{hospital} reports normal intake flow.',
-      'System heartbeat confirmed for medical network sensors.',
+      'اكتملت مراجعة الحالة الروتينية للمنشآت المراقبة.',
+      '{hospital} يسجل تدفق استقبال طبيعي.',
+      'تم تأكيد نبض النظام لحساسات الشبكة الطبية.',
     ],
   },
   {
     severity: 'INFO',
     category: 'Hospital',
     templates: [
-      '{hospital} capacity stabilized within normal range.',
-      'Staffing levels updated for {hospital}.',
+      'استقرت سعة {hospital} ضمن النطاق الطبيعي.',
+      'تم تحديث مستويات التوظيف في {hospital}.',
     ],
   },
   {
     severity: 'WARNING',
     category: 'Hospital',
     templates: [
-      'Hospital occupancy exceeded 90% at {hospital}.',
-      'Medical center entered maintenance mode at {hospital}.',
-      'Elevated ER wait times reported at {hospital}.',
+      'تجاوز إشغال المشفى 90٪ في {hospital}.',
+      'دخلت المنشأة الطبية وضع الصيانة في {hospital}.',
+      'ارتفاع أوقات الانتظار في الطوارئ لدى {hospital}.',
     ],
   },
   {
     severity: 'WARNING',
     category: 'Ambulance',
     templates: [
-      'Ambulance {ambulance} is now unavailable.',
-      'Ambulance {ambulance} delayed due to traffic congestion.',
-      'Ambulance {ambulance} requesting priority corridor clearance.',
+      'سيارة الإسعاف {ambulance} غير متاحة الآن.',
+      'تأخير سيارة الإسعاف {ambulance} بسبب ازدحام المرور.',
+      'سيارة الإسعاف {ambulance} تطلب ممر أولوية.',
     ],
   },
   {
     severity: 'CRITICAL',
     category: 'Emergency',
     templates: [
-      'Emergency case reported in {governorate}.',
-      'Critical capacity reached at {hospital}. Immediate support required.',
-      'Mass-casualty standby activated near {hospital}.',
+      'بلاغ حالة طارئة في {governorate}.',
+      'وصلت السعة الحرجة في {hospital}. مطلوب دعم فوري.',
+      'تفعيل حالة الاستنفار بالقرب من {hospital}.',
     ],
   },
   {
     severity: 'CRITICAL',
     category: 'Hospital',
     templates: [
-      'Hospital occupancy exceeded 90% at {hospital}.',
-      'Critical diversion protocol activated for {hospital}.',
+      'تجاوز إشغال المشفى 90٪ في {hospital}.',
+      'تفعيل بروتوكول التحويل الحرج لـ {hospital}.',
     ],
   },
 ];
@@ -100,6 +100,33 @@ function randomInRange(min: number, max: number): number {
 function pickRandom<T>(items: T[]): T {
   return items[Math.floor(Math.random() * items.length)];
 }
+
+const GOVERNORATE_AR: Record<string, string> = {
+  Damascus: 'دمشق',
+  Aleppo: 'حلب',
+  Homs: 'حمص',
+  Latakia: 'اللاذقية',
+  Hama: 'حماة',
+  Tartus: 'طرطوس',
+  'Deir ez-Zor': 'دير الزور',
+  Raqqa: 'الرقة',
+  Daraa: 'درعا',
+  Idlib: 'إدلب',
+  Hasakah: 'الحسكة',
+  Sweida: 'السويداء',
+  دمشق: 'دمشق',
+  حلب: 'حلب',
+  حمص: 'حمص',
+  اللاذقية: 'اللاذقية',
+  حماة: 'حماة',
+  طرطوس: 'طرطوس',
+  'دير الزور': 'دير الزور',
+  الرقة: 'الرقة',
+  درعا: 'درعا',
+  إدلب: 'إدلب',
+  الحسكة: 'الحسكة',
+  السويداء: 'السويداء',
+};
 
 function getOrCreateMotion(ambulance: Ambulance): AmbulanceMotionState {
   const existing = motionState.get(ambulance.id);
@@ -178,9 +205,14 @@ export function generateRandomAlert(
   const ambulance = pickRandom(ambulances);
 
   const message = template
-    .replace('{hospital}', hospital?.name ?? 'a monitored hospital')
-    .replace('{ambulance}', ambulance?.code ?? 'an ambulance unit')
-    .replace('{governorate}', hospital?.governorate ?? 'Damascus');
+    .replace('{hospital}', hospital?.name ?? 'منشأة طبية مراقبة')
+    .replace('{ambulance}', ambulance?.code ?? 'وحدة إسعاف')
+    .replace(
+      '{governorate}',
+      GOVERNORATE_AR[hospital?.governorate ?? ''] ??
+        hospital?.governorate ??
+        'دمشق'
+    );
 
   return {
     message,

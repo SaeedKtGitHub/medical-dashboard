@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import type { Alert } from '../../types';
+import { labels } from '../../i18n/ar';
 
 interface CriticalToastProps {
   alert: Alert | null;
@@ -36,13 +37,13 @@ export function CriticalToast({
         !
       </div>
       <div className="toast__body">
-        <strong>Critical Alert</strong>
+        <strong>{labels.criticalAlert}</strong>
         <p>{alert.message}</p>
       </div>
       <button
         type="button"
         className="toast__close"
-        aria-label="Dismiss notification"
+        aria-label={labels.dismissNotification}
         onClick={onDismiss}
       >
         ×
