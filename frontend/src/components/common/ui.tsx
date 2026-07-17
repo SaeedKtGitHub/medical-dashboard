@@ -6,8 +6,11 @@ interface LoadingStateProps {
 
 export function LoadingState({ message = 'Loading dashboard...' }: LoadingStateProps) {
   return (
-    <div className="state-panel" role="status">
-      <div className="spinner" aria-hidden="true" />
+    <div className="state-panel state-panel--loading" role="status">
+      <div className="state-panel__brand" aria-hidden="true">
+        +
+      </div>
+      <div className="spinner" />
       <p>{message}</p>
     </div>
   );

@@ -28,12 +28,12 @@ const ambulanceIcon = L.divIcon({
   className: 'custom-marker',
   html: `<span class="marker-ambulance" title="Ambulance">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-      <rect x="2" y="8" width="16" height="9" rx="2" fill="#0B6E99"/>
-      <path d="M18 11h3l1 3v3h-4v-6z" fill="#0B6E99"/>
-      <circle cx="7" cy="18" r="2" fill="#0A4F6E"/>
-      <circle cx="17" cy="18" r="2" fill="#0A4F6E"/>
-      <rect x="6" y="4" width="6" height="4" rx="1" fill="#E8F6FC"/>
-      <path d="M8 5.2h2M9 4.2v2" stroke="#0B6E99" stroke-width="1.4" stroke-linecap="round"/>
+      <rect x="2" y="8" width="16" height="9" rx="2" fill="#007A3D"/>
+      <path d="M18 11h3l1 3v3h-4v-6z" fill="#007A3D"/>
+      <circle cx="7" cy="18" r="2" fill="#005C2E"/>
+      <circle cx="17" cy="18" r="2" fill="#005C2E"/>
+      <rect x="6" y="4" width="6" height="4" rx="1" fill="#EAF5EE"/>
+      <path d="M8 5.2h2M9 4.2v2" stroke="#007A3D" stroke-width="1.4" stroke-linecap="round"/>
     </svg>
   </span>`,
   iconSize: [28, 28],
